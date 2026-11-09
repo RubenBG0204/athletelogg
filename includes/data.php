@@ -39,3 +39,14 @@ $users = [
         'sport'         => 'basketball',
     ],
 ];
+
+// Días de entrenamiento: clave = valor que viaja en el formulario.
+$weekDays = [
+    'monday'    => 'Lunes',
+    'tuesday'   => 'Martes',
+    'wednesday' => 'Miércoles',
+    'thursday'  => 'Jueves',
+    'friday'    => 'Viernes',
+    'saturday'  => 'Sábado',
+    'sunday'    => 'Domingo',
+];

@@ -28,3 +28,13 @@ function renderSportsTable(array $sports, string $title): void
     </table>
     <?php
 }
+
+/**
+ * Pinta el mensaje de error de un campo (si lo tiene), junto al campo.
+ */
+function renderFieldError(array $errors, string $field): void
+{
+    if (isset($errors[$field])) {
+        echo '<span class="field-error">' . e($errors[$field]) . '</span>';
+    }
+}
