@@ -66,3 +66,29 @@ body {
     text-align: center;
     padding: 1rem;
 }
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid #d1d5db;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+}
+
+.data-table th {
+    background: #1f2937;
+    color: #fff;
+}
+
+pre {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    padding: 1rem;
+    overflow-x: auto;
+}

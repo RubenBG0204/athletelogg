@@ -4,6 +4,7 @@ declare(strict_types=1);
 // Clave = fichero destino, valor = texto del enlace.
 $navItems = [
     'index.php'       => 'Inicio',
+    'sports.php'      => 'Deportes',
     'register.php'    => 'Registro',
     'login.php'       => 'Login',
     'training.php'    => 'Nuevo entrenamiento',

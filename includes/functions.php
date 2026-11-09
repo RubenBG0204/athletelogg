@@ -19,3 +19,21 @@ function isActivePage(string $file): bool
 {
     return basename($_SERVER['PHP_SELF']) === $file;
 }
+
+/**
+ * Devuelve solo los deportes de una categoría ('individual' o 'equipo').
+ * Conserva las claves originales para poder seguir usándolas como identificador.
+ */
+function getSportsByCategory(array $sports, string $category): array
+{
+    $filteredSports = [];
+
+    foreach ($sports as $key => $sport) {
+        if ($sport['category'] === $category) {
+            // Se guarda con la misma clave que tenía en el array original.
+            $filteredSports[$key] = $sport;
+        }
+    }
+
+    return $filteredSports;
+}
