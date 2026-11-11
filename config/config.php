@@ -10,3 +10,12 @@ const COOKIE_LIFETIME = 60 * 60 * 24 * 30;
 
 // Cookies de preferencias. Están en una lista para poder borrarlas todas con un foreach.
 const PREFERENCE_COOKIES = ['theme', 'weight_unit', 'tips'];
+
+// Tipos de sesión permitidos (clave = valor del formulario, valor = texto visible).
+const SESSION_TYPES = [
+    'technique'   => 'Técnica',
+    'strength'    => 'Fuerza',
+    'endurance'   => 'Resistencia',
+    'competition' => 'Competición',
+    'recovery'    => 'Recuperación',
+];

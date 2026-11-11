@@ -38,3 +38,38 @@ function renderFieldError(array $errors, string $field): void
         echo '<span class="field-error">' . e($errors[$field]) . '</span>';
     }
 }
+
+/**
+ * Pinta la tabla de entrenamientos (un array de arrays asociativos).
+ */
+function renderTrainingsTable(array $trainings): void
+{
+    ?>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Duración (min)</th>
+                <th>RPE</th>
+                <th>Carga</th>
+                <th>Sensaciones</th>
+                <th>Lesión</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($trainings as $training): ?>
+                <tr>
+                    <td><?= e($training['date']) ?></td>
+                    <td><?= e(SESSION_TYPES[$training['type']]) ?></td>
+                    <td><?= e((string) $training['duration']) ?></td>
+                    <td><?= e((string) $training['rpe']) ?></td>
+                    <td><?= e((string) calculateLoad($training['duration'], $training['rpe'])) ?></td>
+                    <td><?= e($training['notes']) ?></td>
+                    <td><?= $training['injury'] === '' ? '-' : e($training['injury']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php
+}

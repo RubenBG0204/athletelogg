@@ -236,3 +236,37 @@ body.theme-dark {
 .btn-secondary:hover {
     background: #4b5563;
 }
+
+.form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #9ca3af;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.form input[type="date"] {
+    padding: 0.5rem;
+    border: 1px solid #9ca3af;
+    border-radius: 4px;
+}
+
+.stats-box {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+}
+
+/* Tema oscuro para los elementos nuevos */
+.theme-dark .form textarea,
+.theme-dark .form input[type="date"] {
+    background: #111827;
+    color: #e5e7eb;
+    border-color: #4b5563;
+}
+
+.theme-dark .stats-box {
+    background: #1f2937;
+    border-color: #374151;
+}

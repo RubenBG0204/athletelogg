@@ -252,3 +252,118 @@ function updateVisitCounter(): int
 
     return $visits;
 }
+
+/**
+ * Valida los datos de un entrenamiento y devuelve un array de errores.
+ * Clave = nombre del campo, valor = mensaje. Si está vacío, todo es correcto.
+ */
+function validateTraining(array $input): array
+{
+    $errors = [];
+
+    // Fecha: formato válido y no futura. Se re-formatea para rechazar fechas
+    // imposibles como 2026-02-31, que createFromFormat "corregiría" sin avisar.
+    $date = DateTime::createFromFormat('Y-m-d', $input['date']);
+    if ($date === false || $date->format('Y-m-d') !== $input['date']) {
+        $errors['date'] = 'La fecha no es válida.';
+    } elseif ($input['date'] > date('Y-m-d')) {
+        // Con formato Y-m-d, comparar como texto equivale a comparar fechas.
+        $errors['date'] = 'La fecha no puede ser futura.';
+    }
+
+    // Tipo de sesión: debe existir en la lista permitida.
+    if (!array_key_exists($input['type'], SESSION_TYPES)) {
+        $errors['type'] = 'Elige un tipo de sesión.';
+    }
+
+    // Duración: entero entre 5 y 360.
+    $duration = filter_var($input['duration'], FILTER_VALIDATE_INT);
+    if ($duration === false || $duration < 5 || $duration > 360) {
+        $errors['duration'] = 'La duración debe ser un número entre 5 y 360 minutos.';
+    }
+
+    // Esfuerzo percibido: entero entre 1 y 10.
+    $rpe = filter_var($input['rpe'], FILTER_VALIDATE_INT);
+    if ($rpe === false || $rpe < 1 || $rpe > 10) {
+        $errors['rpe'] = 'Elige un esfuerzo percibido entre 1 y 10.';
+    }
+
+    // Sensaciones: opcionales, máximo 200 caracteres.
+    if (mb_strlen($input['notes']) > 200) {
+        $errors['notes'] = 'Las sensaciones no pueden superar los 200 caracteres.';
+    }
+
+    // Lesión: si se marca la casilla, hay que describirla.
+    if ($input['has_injury']) {
+        $injuryLength = mb_strlen($input['injury_description']);
+        if ($injuryLength === 0) {
+            $errors['injury'] = 'Describe la lesión o molestia.';
+        } elseif ($injuryLength > 100) {
+            $errors['injury'] = 'La descripción no puede superar los 100 caracteres.';
+        }
+    }
+
+    return $errors;
+}
+
+/**
+ * Carga de entrenamiento = duración × esfuerzo percibido.
+ */
+function calculateLoad(int $duration, int $rpe): int
+{
+    return $duration * $rpe;
+}
+
+/**
+ * Total de sesiones registradas.
+ */
+function countSessions(array $trainings): int
+{
+    return count($trainings);
+}
+
+/**
+ * Suma de los minutos de todas las sesiones.
+ */
+function getTotalMinutes(array $trainings): int
+{
+    $total = 0;
+
+    foreach ($trainings as $training) {
+        $total += $training['duration'];
+    }
+
+    return $total;
+}
+
+/**
+ * RPE medio. Devuelve 0.0 si no hay sesiones, para no dividir entre cero.
+ */
+function getAverageRpe(array $trainings): float
+{
+    if (count($trainings) === 0) {
+        return 0.0;
+    }
+
+    $sum = 0;
+
+    foreach ($trainings as $training) {
+        $sum += $training['rpe'];
+    }
+
+    return $sum / count($trainings);
+}
+
+/**
+ * Carga total: suma de la carga de cada sesión.
+ */
+function getTotalLoad(array $trainings): int
+{
+    $total = 0;
+
+    foreach ($trainings as $training) {
+        $total += calculateLoad($training['duration'], $training['rpe']);
+    }
+
+    return $total;
+}
