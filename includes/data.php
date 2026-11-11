@@ -50,3 +50,14 @@ $weekDays = [
     'saturday'  => 'Sábado',
     'sunday'    => 'Domingo',
 ];
+
+// Opciones permitidas para las preferencias (clave = valor que viaja en la cookie).
+$themes = [
+    'light' => 'Claro',
+    'dark'  => 'Oscuro',
+];
+
+$weightUnits = [
+    'kg' => 'Kilogramos (kg)',
+    'lb' => 'Libras (lb)',
+];

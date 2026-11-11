@@ -176,3 +176,63 @@ pre {
     padding: 0.4rem 0.7rem;
     font-weight: bold;
 }
+
+/* ===== Temas (se aplican con la clase del <body>) ===== */
+body.theme-light {
+    background: #f4f6f8;
+    color: #222;
+}
+
+body.theme-dark {
+    background: #111827;
+    color: #e5e7eb;
+}
+
+.theme-dark .form,
+.theme-dark .data-table,
+.theme-dark pre {
+    background: #1f2937;
+    color: #e5e7eb;
+    border-color: #374151;
+}
+
+.theme-dark .data-table th,
+.theme-dark .data-table td,
+.theme-dark .form fieldset {
+    border-color: #374151;
+}
+
+.theme-dark .data-table th {
+    background: #0b1220;
+}
+
+.theme-dark .form input[type="text"],
+.theme-dark .form input[type="email"],
+.theme-dark .form input[type="password"],
+.theme-dark .form input[type="number"],
+.theme-dark .form select {
+    background: #111827;
+    color: #e5e7eb;
+    border-color: #4b5563;
+}
+
+/* ===== Extras de este paso ===== */
+.tip-box {
+    background: #dbeafe;
+    border: 1px solid #2563eb;
+    color: #1e3a8a;
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+.reset-form {
+    margin-top: 1rem;
+}
+
+.btn-secondary {
+    background: #6b7280;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+}

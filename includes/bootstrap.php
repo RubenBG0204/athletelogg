@@ -18,3 +18,8 @@ if (session_status() === PHP_SESSION_NONE){
     ]);
     session_start();
 }
+
+// Contador de visitas y preferencias. Va aquí, antes de cualquier HTML, porque
+// setcookie() solo funciona si todavía no se ha enviado nada al navegador.
+$visitCount  = updateVisitCounter();
+$preferences = getPreferences($themes, $weightUnits);

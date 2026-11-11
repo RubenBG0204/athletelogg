@@ -158,3 +158,97 @@ function requireLogin(): void
         exit;
     }
 }
+
+/**
+ * Crea (o borra, si expires está en el pasado) una cookie con las opciones
+ * de seguridad de la app. Se centraliza aquí para no repetir las opciones.
+ */
+function setAppCookie(string $name, string $value, int $expires): void
+{
+    setcookie($name, $value, [
+        'expires'  => $expires,
+        'path'     => '/',
+        // httponly: JavaScript no puede leer la cookie (limita el daño de un XSS).
+        'httponly' => true,
+        // samesite: el navegador no la envía en peticiones que vienen de otras webs.
+        'samesite' => 'Lax',
+        // En producción (HTTPS) se añadiría 'secure' => true; en localhost (HTTP) no funcionaría.
+    ]);
+}
+
+/**
+ * Lee las preferencias desde las cookies y devuelve siempre valores válidos.
+ * Aunque la cookie la creó nuestra app, el usuario puede editarla desde el
+ * navegador, así que se vuelve a comprobar contra las opciones permitidas.
+ */
+function getPreferences(array $themes, array $weightUnits): array
+{
+    // Valores por defecto si no hay cookie (o si la cookie no es válida).
+    $preferences = [
+        'theme'       => 'light',
+        'weight_unit' => 'kg',
+        'tips'        => true,
+    ];
+
+    if (isset($_COOKIE['theme'])
+        && is_string($_COOKIE['theme'])
+        && array_key_exists($_COOKIE['theme'], $themes)
+    ) {
+        $preferences['theme'] = $_COOKIE['theme'];
+    }
+
+    if (isset($_COOKIE['weight_unit'])
+        && is_string($_COOKIE['weight_unit'])
+        && array_key_exists($_COOKIE['weight_unit'], $weightUnits)
+    ) {
+        $preferences['weight_unit'] = $_COOKIE['weight_unit'];
+    }
+
+    if (isset($_COOKIE['tips']) && is_string($_COOKIE['tips'])) {
+        $preferences['tips'] = $_COOKIE['tips'] === '1';
+    }
+
+    return $preferences;
+}
+
+/**
+ * Valida las preferencias enviadas por el formulario y devuelve los errores.
+ * Solo se aceptan valores que existan en las listas de opciones permitidas.
+ */
+function validatePreferences(array $input, array $themes, array $weightUnits): array
+{
+    $errors = [];
+
+    if (!array_key_exists($input['theme'], $themes)) {
+        $errors['theme'] = 'Elige un tema válido.';
+    }
+
+    if (!array_key_exists($input['weight_unit'], $weightUnits)) {
+        $errors['weight_unit'] = 'Elige una unidad de peso válida.';
+    }
+
+    // El checkbox "consejos" solo puede estar marcado o no: no necesita validación.
+
+    return $errors;
+}
+
+/**
+ * Suma una visita al contador guardado en la cookie "visits" y devuelve el total.
+ */
+function updateVisitCounter(): int
+{
+    $visits = 0;
+
+    // ctype_digit asegura que la cookie solo contiene un número.
+    if (isset($_COOKIE['visits'])
+        && is_string($_COOKIE['visits'])
+        && ctype_digit($_COOKIE['visits'])
+    ) {
+        $visits = (int) $_COOKIE['visits'];
+    }
+
+    $visits++;
+    setAppCookie('visits', (string) $visits, time() + COOKIE_LIFETIME);
+
+    return $visits;
+}
