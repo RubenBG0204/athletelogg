@@ -137,3 +137,24 @@ function validateRegistration(array $input, array $sports, array $levels, array 
 
     return $errors;
 }
+
+/**
+ * Indica si hay un usuario autenticado en la sesión
+ */
+function isLoggedIn(): bool
+{
+    return isset($_SESSION['user']);
+}
+
+/**
+ * Protege una página: si no hay sesión, redirige al login y corta la ejecución.
+ * El exit es imprescindible: sin él, PHP seguiría ejecutando el resto de la
+ * página y el contenido privado se enviaría igualmente.
+ */
+function requireLogin(): void
+{
+    if (!isLoggedIn()){
+        header('Location: login.php');
+        exit;
+    }
+}

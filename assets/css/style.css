@@ -170,3 +170,9 @@ pre {
 .btn:hover {
     background: #1d4ed8;
 }
+
+.navbar-user {
+    color: #fff;
+    padding: 0.4rem 0.7rem;
+    font-weight: bold;
+}
